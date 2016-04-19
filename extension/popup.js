@@ -16,7 +16,7 @@ function onCheckPage() {
   var message = document.querySelector('#message');
 
   chrome.tabs.executeScript(null, {
-    file: "getPageSource.js"
+    file: "getPageText.js"
   }, function() {
     // If you try and inject into an extensions page or the webstore/NTP you'll get an error
     if (chrome.runtime.lastError) {
