@@ -1,8 +1,13 @@
 
+'usestrict';
 var dataset = [];
 var labels = [];
-var minimumTimesUsed = 16;
+var minimumTimesUsed = 0;
 var wordsToCount = 25;
+var longest = 0;
+var longestWord = [];
+var highestScore = 0;
+var highestScoreWord = [];
 
 var words = (function(){
 
@@ -13,7 +18,9 @@ var words = (function(){
 	var iWordsCount = sWords.length; // count w/ duplicates
 
 	// array of words to ignore
-	var ignore = ['and','the','to','a','of','for','as','i','with','it','is','on','that','this','can','in','be','has','if','was','at'];
+	var ignore = ['and','the','to','a','of','for','as','i','with','it','is','on',
+					'that','this','can','in','be','has','if','was','at'];
+	
 	ignore = (function(){
 		var o = {}; // object prop checking > in array checking
 		var iCount = ignore.length;
@@ -36,7 +43,8 @@ var words = (function(){
 	for (sWord in counts) {
 		arr.push({
 			text: sWord,
-			frequency: counts[sWord]
+			frequency: counts[sWord],
+			score: 0
 		});
 	}
 
@@ -48,6 +56,9 @@ var words = (function(){
 }());
 
 (function(){
+	var scrabble = {"a":1, "b":3, "c":3, "d":2, "e":1, "f":4, "g":2, "h":4, "i":1,
+					 "j":8, "k":5, "l":1, "m":3, "n":1, "o":1, "p":3, "q":10, "r":1, 
+					 "s":1, "t":1, "u":1, "v":4, "w":4, "x":8, "y":4, "z":10};
 	for (var i=0; i<wordsToCount; i++) {
 		var word = words[i];
 		//console.log(word.frequency, word.text);
@@ -56,8 +67,30 @@ var words = (function(){
 		dataset.push(word.frequency);
 		//labels.push(word.text);
 		}
+		if (word.text.length > longest){
+			//document.getElementById("longest").innerHTML = word.length;
+			longest = word.text.length;
+			longestWord.length = 0;
+			longestWord.push(word.text);
+		} else if (word.text.length === longest){
+			longestWord.push(word.text);
+		}
+		//perform scrabble measures
+		for (var j=0; j<word.text.length; j++){
+			var letter = word.text.charAt(j);
+			word.score = word.score + scrabble[letter];
+		}
+		if (word.score > highestScore){
+			highestScore = word.score;
+			highestScoreWord.length = 0;
+			highestScoreWord.push(word.text);
+		} else if (word.score === highestScore){
+			highestScoreWord.push(word.text);
+			} 
+		
 	}
-	//document.getElementById("displayList").innerHTML = displayList.join();
+	document.getElementById("longest").innerHTML = longestWord.toString();
+	document.getElementById("highest").innerHTML = highestScoreWord.toString();	
 }());
 
 //start graph production

@@ -1,52 +1,83 @@
+
+'usestrict';
+console.log(document.getElementById('checkPage'));
+
+chrome.runtime.onMessage.addListener(function(request, sender) {
+  if (request.action == "getSource") {
+    message.innerHTML = request.source;
+  }
+});
+
+function onWindowLoad() {
+document.getElementById('checkPage').addEventListener('click', onCheckPage);
+}
+
+function onCheckPage() {
+  var message = document.querySelector('#message');
+
+  chrome.tabs.executeScript(null, {
+    file: "getPageSource.js"
+  }, function() {
+    // If you try and inject into an extensions page or the webstore/NTP you'll get an error
+    if (chrome.runtime.lastError) {
+      message.innerText = 'There was an error injecting script : \n' + chrome.runtime.lastError.message;
+    }
+  });
+
+}
+
+window.onload = onWindowLoad;
+
+
+/*
+chrome.tabs.getSelected(null, function(tab) {
+    chrome.tabs.sendMessage(tab.id, {method: "getText"}, function(response) {
+        if(response.method=="getText"){
+            var allText = response.data;
+        }
+    });
+});
+
+
+
+//_________________
 document.addEventListener('DOMContentLoaded', function() {
 	var checkPageButton = document.getElementById('checkPage');
-	checkPageButton.addEventListener('click', function(){
+		checkPageButton.addEventListener('click', function(){
+			chrome.tabs.getSelected(null, function(tab) {
+	
+	var matches = [],
+	desiredLength = 3;
 
-		chrome.tabs.getSelected(null, function(tab) {
+	var words = function(){
 
-			var elements = document.getElementsByTagName('*');
+	var allWords = allText.toLowerCase().trim()
+						 .replace(/[,;.!"?)()-_=+~%$#@^&*\/`<>{}|]/g,'')
+						 .split(/[\s\/]+/g).sort();
+		console.log(typeof allWords);
 
-			uniqueList = {}
-
-			for (var i = 0; i < elements.length; i++) {
-			    var element = elements[i];
-
-			    for (var j = 0; j < element.childNodes.length; j++) {
-			        var node = element.childNodes[j];
-
-			        if (node.nodeType === 3) {
-			            var text = node.nodeValue;
-			            
-			            if text in uniqueList {
-			            	uniqueList[text] = uniqueList[text] + 1; 
-			            } else {
-			            	uniqueList[text] = 1;
-			            	}
-			            }
-			        }
-			    }
-
-
-		  chrome.tabs.executeScript({
-		    	alert('hello there');
-			}); 
-
+		for (var i=0; i<allWords.length; i++) {
+			console.log(i);
+			if (words[i].text.length === desiredLength){
+			matches.push(word.text);
+			console.log(word.text);
 			}
+		}
+		return matches;	
+	}; 
 
-			/*
-			d = document;
+	var printWords = function(matches){
+		tempString = '<ul id="matchList">'
+		for(var i = 0; i < matches.length; i++){
+			tempString+='<li>'+matches[i]+'</li>';
+		}
+		tempString+="</ul>";
+		return tempString;
+	};
+	document.getElementById("matches").innerHTML = printWords(matches);
 
-			var f = d.createElement('form');
-			f.action = uniqueList;
-			f.method = 'post';
-			var i = d.createElement('input');
-			i.type = 'hidden';
-			i.name = 'url';
-			i.value = tab.url;
-			f.appendChild(i);
-			d.body.appendChild(f);
-			f.submit();
-			*/
 		});
 	}, false);
 }, false);
+
+*/
