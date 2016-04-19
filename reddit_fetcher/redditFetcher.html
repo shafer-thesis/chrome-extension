@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="redditFetcher.css">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+	
+
+</head>
+<body>
+	<script rel="text/javascript" src="redditFetcher.js"></script>
+	<h1>
+    	Reddit Fetcher 
+	</h1>
+	<input id="redditURL" type="text" value="https://www.youtube.com/watch?v=QAjZaSlWG50&spfreload=5" class="form-element" size="50" />
+	<br/>
+	<button onclick="getRedditData($('#redditURL').val());return false;">
+    	get reddit data 
+	</button>
+<div id="content"></div>
+
+</body>
+</html>

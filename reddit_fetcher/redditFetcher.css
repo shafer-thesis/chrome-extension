@@ -1,0 +1,20 @@
+body{
+	padding:12px;
+	text-align: center;
+	margin-top: 3%;
+	background-color: #eeeeee;
+}
+
+table{
+	border-collapse:collapse;
+}
+
+td,th{
+	border:1px 
+	solid #e0e0e0;
+	padding:4px;
+}
+
+button{
+	margin-top: 20px;
+}
